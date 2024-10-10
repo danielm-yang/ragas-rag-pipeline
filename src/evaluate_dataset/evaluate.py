@@ -10,17 +10,17 @@ from ragas import evaluate
 
 
 class SyntheticTestEvaluator:
-    def __init__(self, openai_api_key):
+    def __init__(self, openai_api_key, testset):
         os.environ["OPENAI_API_KEY"] = openai_api_key
-        self.dataset = []
+        self.dataset = testset
         self.result = None
 
 
     # Load dataset
     def load_in_dataset(self):
-        self.dataset = load_dataset("explodinggradients/amnesty_qa", "english_v2")
-        
-        if self.dataset:
+        # self.dataset = load_dataset('./src/testset')
+
+        if self.dataset is not None:
             print("Dataset successfully loaded.")
         else:
             print("Failed to load dataset. Aborting...")
@@ -41,8 +41,11 @@ class SyntheticTestEvaluator:
 
         print("Dataset successfully evaluated.")
 
+        print("LLM performance:", self.result)
+
 
     def visualize_dataframe(self):
         print("Results exported to Pandas Dataframe.")
         df = self.result.to_pandas()
-        df.head()
+        
+        print(df.head())
